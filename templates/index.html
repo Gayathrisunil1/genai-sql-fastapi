@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI E-commerce Q&A</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            width: 600px;
+            margin: auto;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        input[type=text] {
+            width: 90%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        input[type=submit] {
+            padding: 10px 20px;
+        }
+        .answer {
+            margin-top: 20px;
+            background: #e6f7ff;
+            padding: 10px;
+            border-radius: 6px;
+        }
+        .sql {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Ask a Question About Your Sales</h2>
+        <form method="post">
+            <input type="text" name="question" placeholder="e.g. What is my total sales?" required />
+            <br>
+            <input type="submit" value="Ask" />
+        </form>
+
+        {% if answer %}
+            <div class="answer">
+                <strong>Answer:</strong> {{ answer }}
+                <div class="sql">
+                    <strong>SQL Used:</strong> {{ sql }}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
