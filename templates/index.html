@@ -12,7 +12,8 @@
             background: #fff;
             padding: 20px;
             border-radius: 8px;
-            width: 600px;
+            width: 90%;
+            max-width: 800px;
             margin: auto;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
@@ -35,6 +36,22 @@
             color: #666;
             margin-top: 10px;
         }
+        table {
+            margin-top: 10px;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        td {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -46,13 +63,70 @@
             <input type="submit" value="Ask" />
         </form>
 
-        {% if answer %}
+        {% if answer or result %}
             <div class="answer">
-                <strong>Answer:</strong> {{ answer }}
+                <strong>Answer:</strong><br>
+
+                {% if answer %}
+                    <p>{{ answer }}</p>
+                {% endif %}
+
+                {% if columns and result %}
+                    <h4>Table View:</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                {% for col in columns %}
+                                    <th>{{ col }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in result %}
+                                <tr>
+                                    {% for cell in row %}
+                                        <td>{{ cell }}</td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+
                 <div class="sql">
                     <strong>SQL Used:</strong> {{ sql }}
                 </div>
             </div>
+        {% endif %}
+
+        {% if show_chart %}
+            <h3>Chart:</h3>
+            <canvas id="myChart" width="400" height="200"></canvas>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+            <script>
+                const ctx = document.getElementById('myChart').getContext('2d');
+                const chart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: {{ labels | tojson }},
+                        datasets: [{
+                            label: 'Value',
+                            data: {{ values | tojson }},
+                            backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            </script>
         {% endif %}
     </div>
 </body>
